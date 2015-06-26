@@ -12,7 +12,7 @@ How to Play:
 <p align="center">
   <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/move.PNG?raw=true"/>
 </p>
-2: Avoid the moving bugs. If bugs touch the character, game is over.
+2: Avoid the moving bugs. If bugs touch the character, you will lose the game.
 <p align="center">
   <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/lost.PNG?raw=true"/>
 </p>
@@ -20,7 +20,7 @@ How to Play:
 <p align="center">
   <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/won.PNG?raw=true"/>
 </p>
-
+4: No matter you win or lose the game, you can always press the "Restart" button to reset the game. 
 
 
 
