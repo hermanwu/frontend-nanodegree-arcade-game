@@ -9,14 +9,17 @@ How to Play:
 -----------
 
 1: Use "up", "down", "left", "right" keys to control characters movement.
-->![alt text](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/readme_images/move.PNG)<-
-
-2: Avoid the moving bugs. If bugs touch the character, game over.
-![ScreenShot](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/readme_images/lost.PNG)
-
+<p align="center">
+  <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/move.PNG?raw=true"/>
+</p>
+2: Avoid the moving bugs. If bugs touch the character, game is over.
+<p align="center">
+  <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/lost.PNG?raw=true"/>
+</p>
 3: In order to win the game, the character needs to collect all gems.
-![ScreenShot](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/readme_images/won.PNG)
-
+<p align="center">
+  <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/won.PNG?raw=true"/>
+</p>
 
 
 
