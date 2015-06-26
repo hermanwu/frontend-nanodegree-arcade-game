@@ -7,5 +7,21 @@ This game is used to practice <br/>
 2: HTML5 Canvas <br/>
 How to Play:
 -----------
+
+1: Use "up", "down", "left", "right" keys to control characters movement.
+
+
+
+2: Avoid the moving bugs. If bugs touch the character, game over.
+
+
+3: In order to win the game, the character needs to collect all gems.
+
+
+
+
+
+
+
 ![ScreenShot](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/images/Rock.png)
 
