@@ -1,3 +1,4 @@
+"use strict"
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
@@ -13,7 +14,8 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
-
+ 
+//??? where does this engine function gets called
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -47,6 +49,8 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
+        checkCollisions();
+        
 
         /* Set our lastTime variable which is used to determine the time delta
          * for the next time this function is called.
@@ -67,7 +71,7 @@ var Engine = (function(global) {
         reset();
         lastTime = Date.now();
         main();
-    }
+    };
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how
@@ -80,8 +84,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
-    }
+    };
 
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -91,10 +94,67 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+        allGems.forEach(function(gem) {
+            gem.update();
         });
-        player.update();
+        if(player.moveAbility) {
+            player.update();
+        }
+        allEnemies.forEach(function(enemy) {
+            if(enemy.moveAbility){
+                enemy.update(dt);
+            }
+        });
+    };
+
+
+    function checkCollisions(){
+        allGems.forEach(function(gem){
+            if(gem.availability && gem.row == player.row && gem.col == player.col){
+                gem.availability = false;
+                player.collectedGems++;
+                if(player.collectedGems == 5){
+                    freezeEnemies();
+                    freezePlayer();
+                    winGame();
+                }
+            }
+        });
+        allEnemies.forEach(function(enemy) {
+            var playerLeftSideX = player.x + 25;
+            var playerRightSideX = player.x + player.width - 25;
+            var enemyLeftSideX = enemy.x;
+            var enemyRightSideX = enemy.x + enemy.width;
+            if(enemy.row == player.row){
+                if(playerLeftSideX < enemyRightSideX && enemyLeftSideX < playerRightSideX){
+                    freezeEnemies();
+                    freezePlayer();
+                    loseGame();
+                }
+            }
+        });
+    };
+
+    function freezeEnemies(){
+        allEnemies.forEach(function(enemy) {
+            enemy.moveAbility = false;
+            
+        });
+    }
+
+    function freezePlayer(){
+        player.moveAbility = false;
+    }
+
+    function winGame(){
+        doc.getElementById('status').innerHTML = "YOU WON!";
+        allEnemies.forEach(function(enemy) {
+            enemy.sprite = 'images/Star.png';
+        });
+    }
+
+    function loseGame(){
+        doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
     }
 
     /* This function initially draws the "game level", it will then call
@@ -135,8 +195,6 @@ var Engine = (function(global) {
                 ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
-
         renderEntities();
     }
 
@@ -148,20 +206,29 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        allGems.forEach(function(gem) {
+            gem.render();
+        }); 
+
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
         player.render();
+
     }
+
 
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        player.row = player.startingRow;
+        player.col = player.startingCol;
     }
+
+
 
     /* Go ahead and load all of the images we know we're going to need to
      * draw our game level. Then set init as the callback method, so that when
@@ -171,8 +238,10 @@ var Engine = (function(global) {
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
+        'images/char-boy.png',
+        'images/gem-blue.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/Star.png'
     ]);
     Resources.onReady(init);
 
