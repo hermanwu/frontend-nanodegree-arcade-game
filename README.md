@@ -9,7 +9,7 @@ How to Play:
 -----------
 
 1: Use "up", "down", "left", "right" keys to control characters movement.
-![ScreenShot](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/readme_images/move.PNG)
+->![alt text](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/readme_images/move.PNG)<-
 
 2: Avoid the moving bugs. If bugs touch the character, game over.
 ![ScreenShot](https://raw.github.com/hermanwu/frontend-nanodegree-arcade-game/master/readme_images/lost.PNG)
