@@ -2,7 +2,7 @@
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
- * render methods on your player and enemy objects (defined in your app.js).
+ * render methods on your player and enemy objects.
  *
  * A game engine works by drawing the entire game screen over and over, kind of
  * like a flipbook you may have created as a kid. When your player moves across
@@ -14,8 +14,6 @@
  * the canvas' context (ctx) object globally available to make writing app.js
  * a little simpler to work with.
  */
- 
-//??? where does this engine function gets called
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -49,6 +47,7 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
+        // Check if the player has touched enemies or gems
         checkCollisions();
         
 
@@ -68,19 +67,12 @@ var Engine = (function(global) {
      * game loop.
      */
     function init() {
-        reset();
         lastTime = Date.now();
         main();
     };
 
     /* This function is called by main (our game loop) and itself calls all
-     * of the functions which may need to update entity's data. Based on how
-     * you implement your collision detection (when two entities occupy the
-     * same space, for instance when your character should die), you may find
-     * the need to add an additional function call here. For now, we've left
-     * it commented out - you may or may not want to implement this
-     * functionality this way (you could just implement collision detection
-     * on the entities themselves within your app.js file).
+     * of the functions which may need to update entity's data. 
      */
     function update(dt) {
         updateEntities(dt);
@@ -89,9 +81,7 @@ var Engine = (function(global) {
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
      * their update() methods. It will then call the update function for your
-     * player object. These update methods should focus purely on updating
-     * the data/properties related to  the object. Do your drawing in your
-     * render methods.
+     * player object.
      */
     function updateEntities(dt) {
         allGems.forEach(function(gem) {
@@ -110,9 +100,12 @@ var Engine = (function(global) {
 
     function checkCollisions(){
         allGems.forEach(function(gem){
+            //When character is in the same box as the gem, gem will be
+            //collected
             if(gem.availability && gem.row == player.row && gem.col == player.col){
                 gem.availability = false;
                 player.collectedGems++;
+                //If all gems have been collected, user won the game.
                 if(player.collectedGems == 5){
                     freezeEnemies();
                     freezePlayer();
@@ -121,10 +114,12 @@ var Engine = (function(global) {
             }
         });
         allEnemies.forEach(function(enemy) {
+            //Calcuate the touching boundaries of player and enemies
             var playerLeftSideX = player.x + 25;
             var playerRightSideX = player.x + player.width - 25;
             var enemyLeftSideX = enemy.x;
             var enemyRightSideX = enemy.x + enemy.width;
+            //Check whether enemy and player are touched
             if(enemy.row == player.row){
                 if(playerLeftSideX < enemyRightSideX && enemyLeftSideX < playerRightSideX){
                     freezeEnemies();
@@ -135,6 +130,7 @@ var Engine = (function(global) {
         });
     };
 
+    //Stop all enemies' movement
     function freezeEnemies(){
         allEnemies.forEach(function(enemy) {
             enemy.moveAbility = false;
@@ -142,10 +138,12 @@ var Engine = (function(global) {
         });
     }
 
+    //Stop player's movement
     function freezePlayer(){
         player.moveAbility = false;
     }
 
+    //Display status when player wins the game    
     function winGame(){
         doc.getElementById('status').innerHTML = "YOU WON!";
         allEnemies.forEach(function(enemy) {
@@ -153,6 +151,7 @@ var Engine = (function(global) {
         });
     }
 
+    //Display status when player loses the game
     function loseGame(){
         doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
     }
@@ -217,17 +216,6 @@ var Engine = (function(global) {
         player.render();
 
     }
-
-
-    /* This function does nothing but it could have been a good place to
-     * handle game reset states - maybe a new game menu or a game over screen
-     * those sorts of things. It's only called once by the init() method.
-     */
-    function reset() {
-        player.row = player.startingRow;
-        player.col = player.startingCol;
-    }
-
 
 
     /* Go ahead and load all of the images we know we're going to need to
