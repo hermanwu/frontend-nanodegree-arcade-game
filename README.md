@@ -2,12 +2,16 @@ Frontend-nanodegree-arcade-game
 ===============================
 Purpose: 
 -------
-This game is used to practice <br/>
-1: Object-Oriented JavaScript <br/>
-2: HTML5 Canvas <br/>
+This game is used to practice
+
+1: Object-Oriented JavaScript
+
+2: HTML5 Canvas
+
 How to Play:
 -----------
 1: Open index.html in the browser
+
 2: Use "up", "down", "left", "right" keys to control characters movement.
 <p align="center">
   <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/move.PNG?raw=true"/>
