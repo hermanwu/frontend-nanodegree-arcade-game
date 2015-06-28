@@ -85,6 +85,9 @@ var Engine = (function(global) {
         //check whether player win or lose the game
         if(player.lose){
             doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
+            allEnemies.forEach(function(enemy) {
+                enemy.freeze();
+            });
         }
         if(player.win){
             doc.getElementById('status').innerHTML = "YOU WON!";
