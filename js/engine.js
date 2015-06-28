@@ -47,8 +47,6 @@ var Engine = (function(global) {
          */
         update(dt);
         render();
-        // Check if the player has touched enemies or gems
-        checkCollisions();
         
 
         /* Set our lastTime variable which is used to determine the time delta
@@ -84,77 +82,31 @@ var Engine = (function(global) {
      * player object.
      */
     function updateEntities(dt) {
+        //check whether player win or lose the game
+        if(player.lose){
+            doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
+        }
+        if(player.win){
+            doc.getElementById('status').innerHTML = "YOU WON!";
+            allEnemies.forEach(function(enemy) {
+                enemy.freeze();
+                enemy.sprite = 'images/Star.png';
+            });
+        }
+        //update gems
         allGems.forEach(function(gem) {
             gem.update();
         });
-        if(player.moveAbility) {
-            player.update();
-        }
+        //update all enemies
         allEnemies.forEach(function(enemy) {
             if(enemy.moveAbility){
                 enemy.update(dt);
             }
         });
+        //update player and check collision
+        player.update();
+        player.checkCollision(allGems, allEnemies);
     };
-
-
-    function checkCollisions(){
-        allGems.forEach(function(gem){
-            //When character is in the same box as the gem, gem will be
-            //collected
-            if(gem.availability && gem.row == player.row && gem.col == player.col){
-                gem.availability = false;
-                player.collectedGems++;
-                //If all gems have been collected, user won the game.
-                if(player.collectedGems == 5){
-                    freezeEnemies();
-                    freezePlayer();
-                    winGame();
-                }
-            }
-        });
-        allEnemies.forEach(function(enemy) {
-            //Calcuate the touching boundaries of player and enemies
-            var playerLeftSideX = player.x + 25;
-            var playerRightSideX = player.x + player.width - 25;
-            var enemyLeftSideX = enemy.x;
-            var enemyRightSideX = enemy.x + enemy.width;
-            //Check whether enemy and player are touched
-            if(enemy.row == player.row){
-                if(playerLeftSideX < enemyRightSideX && enemyLeftSideX < playerRightSideX){
-                    freezeEnemies();
-                    freezePlayer();
-                    loseGame();
-                }
-            }
-        });
-    };
-
-    //Stop all enemies' movement
-    function freezeEnemies(){
-        allEnemies.forEach(function(enemy) {
-            enemy.moveAbility = false;
-            
-        });
-    }
-
-    //Stop player's movement
-    function freezePlayer(){
-        player.moveAbility = false;
-    }
-
-    //Display status when player wins the game    
-    function winGame(){
-        doc.getElementById('status').innerHTML = "YOU WON!";
-        allEnemies.forEach(function(enemy) {
-            enemy.sprite = 'images/Star.png';
-        });
-    }
-
-    //Display status when player loses the game
-    function loseGame(){
-        doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
-    }
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
@@ -171,7 +123,7 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 1 of 3 of stone
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
-                'images/grass-block.png',   // Row 1 of 2 of grass
+                'images/grass-block.png',   // Row 1 of 2 of grass-block
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
             numRows = 6,

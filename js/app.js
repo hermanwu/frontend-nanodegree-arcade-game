@@ -37,6 +37,12 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//Disable enemies' ability to move
+Enemy.prototype.freeze = function() {
+    this.moveAbility = false;
+};
+
+
 //Player which can be controlled using keyboard
 var Player = function(){
     //Player's character image
@@ -56,12 +62,28 @@ var Player = function(){
     this.collectedGems = 0;
     //This flag indicate whether player can move or not
     this.moveAbility = true;
+    //indicate whether player win or lose the game
+    this.win = false;
+    this.lose =false;
 };
 
 //Method to update player's position
 Player.prototype.update = function(){
-    this.x = this.width * this.col;
-    this.y = -23 + this.height * this.row;
+    //If player collects enough gems, he/she will win the game
+    if(this.collectedGems == 5){
+        this.freeze();
+        this.win = true;
+    }
+    else {
+        this.x = this.width * this.col;
+        this.y = -23 + this.height * this.row;
+        // when play reaches to the river, he/she will be transported back to 
+        // the starting position
+        if(this.row == 1 && this.col == 2){
+            this.row = this.startingRow;
+            this.col = this.startingCol;
+        }
+    }
 };
 
 //Method to draw player on the game board
@@ -69,20 +91,54 @@ Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//Disable player's ability to move
+Player.prototype.freeze = function(){
+    this.moveAbility = false;
+}
+
+//check whether player is collided to Gems or Enemies
+Player.prototype.checkCollision = function(gems, enemies) {
+    var _this = this;
+    gems.forEach(function(gem){
+        //When character is in the same box as the gem, gem will be
+        //collected
+        if(gem.availability && gem.row == _this.row && gem.col == _this.col){
+            gem.availability = false;
+            _this.collectedGems++;
+        }
+    });
+    enemies.forEach(function(enemy) {
+        //Calcuate the touching boundaries of player and enemies
+        var playerLeftSideX = _this.x + 25;
+        var playerRightSideX = _this.x + _this.width - 25;
+        var enemyLeftSideX = enemy.x;
+        var enemyRightSideX = enemy.x + enemy.width;
+        //Check whether enemy and player are touched
+        if(enemy.row == player.row &&
+           playerLeftSideX < enemyRightSideX &&
+           enemyLeftSideX < playerRightSideX) {
+                _this.freeze();
+                _this.lose = true; 
+        }
+    });  
+}
+
 //Method to hand keyboard input with its corresponding
 //character movement
 Player.prototype.handleInput = function(keyInput){
-    if(keyInput === "down" && this.row < 5){
-        this.row = this.row + 1;
-    }
-    if(keyInput === "up" && this.row > 1){
-        this.row = this.row - 1;
-    }
-    if(keyInput === "left" && this.col > 0){
-        this.col = this.col - 1;
-    }
-    if(keyInput === "right" && this.col < 4){
-        this.col = this.col + 1;
+    if(player.moveAbility){
+        if(keyInput === "down" && this.row < 5){
+            this.row = this.row + 1;
+        }
+        if(keyInput === "up" && this.row > 1){
+            this.row = this.row - 1;
+        }
+        if(keyInput === "left" && this.col > 0){
+            this.col = this.col - 1;
+        }
+        if(keyInput === "right" && this.col < 4){
+            this.col = this.col + 1;
+        }
     }
 };
 
@@ -95,7 +151,7 @@ var Gem = function(){
     this.width =101;
     this.height = 83;
     //Randomly generate gem's position on the game board 
-    this.row = 1 + Math.floor(Math.random() * 5);
+    this.row = 2 + Math.floor(Math.random() * 4);
     this.col = Math.floor(Math.random() * 5);
     //flag to indicate whether the gem is collected
     this.availability  = true;
@@ -114,8 +170,28 @@ Gem.prototype.render = function(){
     }
 };
 
+//
+var Game = function(){
+    //whether game is on going
+    this.onGoing = true;
+    this.winning = false;
+}
+
+//Display status when player wins the game
+Game.prototype.update = function(player){
+    doc.getElementById('status').innerHTML = "YOU WON!";
+}
+
+//Display status when player loses the game
+Game.prototype.lose = function(doc){
+    this.onGoing = false;
+    doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
+}
+
 
 // Objects initialization.
+// Instantiate a game.
+var game = new Game();
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 // Place the player object in a variable called player
