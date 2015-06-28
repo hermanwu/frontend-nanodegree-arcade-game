@@ -20,7 +20,7 @@ How to Play:
 <p align="center">
   <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/lost.PNG?raw=true"/>
 </p>
-4: In order to win the game, the character needs to collect all gems. Also, when character reaches to the water, it will be transported back to the starting position.
+4: In order to win the game, the character needs to collect all gems. Also, when character reaches to the center tile next to river, it will be transported back to the starting position.
 <p align="center">
   <img src="https://github.com/hermanwu/frontend-nanodegree-arcade-game/blob/master/readme_images/won.PNG?raw=true"/>
 </p>

@@ -170,28 +170,7 @@ Gem.prototype.render = function(){
     }
 };
 
-//
-var Game = function(){
-    //whether game is on going
-    this.onGoing = true;
-    this.winning = false;
-}
-
-//Display status when player wins the game
-Game.prototype.update = function(player){
-    doc.getElementById('status').innerHTML = "YOU WON!";
-}
-
-//Display status when player loses the game
-Game.prototype.lose = function(doc){
-    this.onGoing = false;
-    doc.getElementById('status').innerHTML = "Sorry, you lost. Please click the restart button!";
-}
-
-
 // Objects initialization.
-// Instantiate a game.
-var game = new Game();
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [new Enemy(), new Enemy(), new Enemy(), new Enemy()];
 // Place the player object in a variable called player
