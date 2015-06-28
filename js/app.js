@@ -94,7 +94,7 @@ Player.prototype.render = function(){
 //Disable player's ability to move
 Player.prototype.freeze = function(){
     this.moveAbility = false;
-}
+};
 
 //check whether player is collided to Gems or Enemies
 Player.prototype.checkCollision = function(gems, enemies) {
@@ -117,11 +117,11 @@ Player.prototype.checkCollision = function(gems, enemies) {
         if(enemy.row == player.row &&
            playerLeftSideX < enemyRightSideX &&
            enemyLeftSideX < playerRightSideX) {
-                _this.freeze();
-                _this.lose = true; 
+            _this.freeze();
+            _this.lose = true; 
         }
     });  
-}
+};
 
 //Method to hand keyboard input with its corresponding
 //character movement
@@ -195,5 +195,3 @@ document.addEventListener('keyup', function(e) {
 function refreshPage(){
     location.reload();
 }
-
-

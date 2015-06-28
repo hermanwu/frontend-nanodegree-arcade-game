@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 /* Engine.js
  * This file provides the game loop functionality (update entities and render),
  * draws the initial game board on the screen, and then calls the update and
@@ -58,7 +58,7 @@ var Engine = (function(global) {
          * function again as soon as the browser is able to draw another frame.
          */
         win.requestAnimationFrame(main);
-    };
+    }
 
     /* This function does some initial setup that should only occur once,
      * particularly setting the lastTime variable that is required for the
@@ -67,14 +67,14 @@ var Engine = (function(global) {
     function init() {
         lastTime = Date.now();
         main();
-    };
+    }
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. 
      */
     function update(dt) {
         updateEntities(dt);
-    };
+    }
 
     /* This is called by the update function  and loops through all of the
      * objects within your allEnemies array as defined in app.js and calls
@@ -109,7 +109,7 @@ var Engine = (function(global) {
         //update player and check collision
         player.update();
         player.checkCollision(allGems, allEnemies);
-    };
+    }
 
     /* This function initially draws the "game level", it will then call
      * the renderEntities function. Remember, this function is called every
