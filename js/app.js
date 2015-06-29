@@ -1,12 +1,22 @@
 "use strict";
+// Entity represents a single element in the game
+var Entity = function(){
+    //width and height are shared by all entities
+    //which are used to calcuate the relative position
+    this.width = 101;
+    this.height = 83;
+    //default relative position is 0;
+    this.x = 0;
+    this.y = 0;
+};
+
 //Enemies player must avoid
 var Enemy = function() {
+    Entity.call(this);
     //image for enemy characters
     this.sprite = 'images/enemy-bug.png';
     //Relative width and height of the enemy image
     //which can be used to calculate enemy's position
-    this.width = 101;
-    this.height = 83;
     //Starting position of the enemy
     this.startingX = - this.width;
     this.x = this.startingX;
@@ -18,6 +28,10 @@ var Enemy = function() {
     //flag to indicate whether enemy is moving or not
     this.moveAbility = true;
 };
+
+// Inherit the Entity object;
+Enemy.prototype = Object.create(Entity.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Update the enemy's position
 // Parameter: dt, a time delta between ticks
@@ -45,12 +59,9 @@ Enemy.prototype.freeze = function() {
 
 //Player which can be controlled using keyboard
 var Player = function(){
+    Entity.call(this);
     //Player's character image
     this.sprite = 'images/char-boy.png';
-    //Relative width and height of the player image
-    //which can be used to calculate player's position
-    this.width = 101;
-    this.height = 83;
     //Starting position on the game board
     this.startingCol = 2;  
     this.startingRow = 5;
@@ -66,6 +77,10 @@ var Player = function(){
     this.win = false;
     this.lose =false;
 };
+
+// Inherit the Entity object;
+Player.prototype = Object.create(Entity.prototype);
+Player.prototype.contructor = Player;
 
 //Method to update player's position
 Player.prototype.update = function(){
@@ -144,18 +159,19 @@ Player.prototype.handleInput = function(keyInput){
 
 //Gem that player needs to collect
 var Gem = function(){
+    Entity.call(this);
     // Gem's image
     this.sprite = 'images/gem-blue.png';
-    //Relative width and height of the gem image
-    //which can be used to calculate gem's position
-    this.width =101;
-    this.height = 83;
     //Randomly generate gem's position on the game board 
     this.row = 2 + Math.floor(Math.random() * 4);
     this.col = Math.floor(Math.random() * 5);
     //flag to indicate whether the gem is collected
     this.availability  = true;
 };
+
+// Inherit the Entity object;
+Gem.prototype = Object.create(Entity.prototype);
+Gem.prototype.contructor = Gem;
 
 //Method to update gem's position
 Gem.prototype.update = function(){
